@@ -1,0 +1,9 @@
+# M0
+mavsdk
+
+# M1 onward (ArUco lives in opencv-contrib, not base opencv)
+opencv-contrib-python
+numpy
+
+# M3 analysis and plotting
+matplotlib
