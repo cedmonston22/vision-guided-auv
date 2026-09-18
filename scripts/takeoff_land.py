@@ -2,7 +2,7 @@
 Run PX4 SITL first, in a separate terminal:
  
     cd ~/PX4-Autopilot
-    make px4_sitl gz_x500
+    make px4_sitl gz_x500_mono_cam_down
 """
 
 
