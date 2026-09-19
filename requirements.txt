@@ -5,5 +5,8 @@ mavsdk
 opencv-contrib-python
 numpy
 
+# rclpy runtime dep, not imported by the code
+PyYAML
+
 # M3 analysis and plotting
 matplotlib
