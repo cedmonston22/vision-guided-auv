@@ -7,6 +7,10 @@ ultimately to navigate with GPS disabled using vision-based state estimation.
 All work is developed and validated in PX4 Software-In-The-Loop (SITL) with Gazebo.
 No hardware flight testing has been performed.
 
+## Running it
+
+See [COMMANDS.md](COMMANDS.md) for setup and the startup sequence.
+
 ## Why this exists
 
 PX4 is the production flight stack that runs on real Pixhawk hardware. The offboard
