@@ -27,10 +27,13 @@ class MarkerDetector(Node):
         frame = np.frombuffer(msg.data, dtype = np.uint8).reshape(msg.height, msg.width, 3)
         gray = cv2.cvtColor(frame, cv2.COLOR_RGB2GRAY)
         corners, ids, _ = self.detector.detectMarkers(gray)
-        
         bgr = cv2.cvtColor(frame, cv2.COLOR_RGB2BGR)
         if ids is not None:
             cv2.aruco.drawDetectedMarkers(bgr, corners, ids)
+            center = corners[0][0].mean(axis=0)
+            err_x = center[0] - msg.width / 2
+            err_y = center[1] - msg.height / 2
+            self.get_logger().info(f"err_x={err_x:+.1f} err_y={err_y:+.1f}")
         cv2.imshow("detect", bgr)
         cv2.waitKey(1)
                 
