@@ -19,7 +19,7 @@ async def run():
     await drone.action.set_takeoff_altitude(5)
     await drone.action.takeoff()
     
-    await asyncio.sleep(10)
+    await asyncio.sleep(20)
     async for pos in drone.telemetry.position():
         print(pos)
         break
