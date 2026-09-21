@@ -8,12 +8,16 @@ Repo at `~/vision-guided-uav`, PX4 at `~/PX4-Autopilot`.
 sudo apt install ros-jazzy-ros-base ros-jazzy-ros-gz-bridge ros-jazzy-ros-gz-image ros-jazzy-rqt-image-view
 ```
 
-UDP receive buffer. Frames are 3.5 MB and the 208 KB default drops most of them.
+UDP socket buffers, send and receive. Frames are 3.5 MB and the 208 KB
+defaults drop most of them. Measured 6 Hz with only the receive side
+raised, 24 Hz with both.
 
 ```bash
 sudo tee /etc/sysctl.d/99-ros2.conf <<'CONF'
 net.core.rmem_max=16777216
 net.core.rmem_default=16777216
+net.core.wmem_max=16777216
+net.core.wmem_default=16777216
 CONF
 ```
 
@@ -41,10 +45,14 @@ gz service -s /world/default/create --reqtype gz.msgs.EntityFactory --reptype gz
 source /opt/ros/jazzy/setup.bash && ros2 run ros_gz_image image_bridge /world/default/model/x500_mono_cam_down_0/link/camera_link/sensor/camera/image
 ```
 
-### 3. Viewer
+### 3. Viewer or Detector
 
 ```bash
 source /opt/ros/jazzy/setup.bash && source ~/vision-guided-uav/.venv/bin/activate && python ~/vision-guided-uav/scripts/view_camera.py
+```
+
+```bash
+source /opt/ros/jazzy/setup.bash && source ~/vision-guided-uav/.venv/bin/activate && python ~/vision-guided-uav/scripts/detect_marker.py
 ```
 
 ### 4. Flight
