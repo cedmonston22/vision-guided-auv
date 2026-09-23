@@ -6,6 +6,7 @@ import numpy as np
 import cv2
 from gz.transport13 import Node as GzNode
 from gz.msgs10.pose_v_pb2 import Pose_V
+import math
 
 TOPIC = "/world/default/model/x500_mono_cam_down_0/link/camera_link/sensor/camera/image"
 
@@ -18,6 +19,7 @@ QOS = QoSProfile(
 ARUCO_DICT = cv2.aruco.DICT_4X4_50
 POSE_TOPIC = "/world/default/pose/info"
 MODEL_NAME = "x500_mono_cam_down_0"
+HFOV = 1.74
 
 class MarkerDetector(Node):
     def __init__(self):
@@ -41,8 +43,15 @@ class MarkerDetector(Node):
             err_x = center[0] - msg.width / 2
             err_y = center[1] - msg.height / 2
             alt = self.altitude
-            alt_s = f"{alt:.2f}" if alt is not None else "?"
-            self.get_logger().info(f"alt={alt_s}m err_x={err_x:+.1f} err_y={err_y:+.1f}")
+            if alt is None:
+                self.get_logger().info(f"alt=? err_x={err_x:+.1f} err_y={err_y:+.1f}")
+            else:
+                focal = (msg.width / 2) / math.tan(HFOV / 2)
+                err_x_m = err_x * alt/focal
+                err_y_m = err_y * alt/focal
+                self.get_logger().info(
+                    f"alt={alt:.2f}m  err=({err_x:+.0f},{err_y:+.0f})px  ({err_x_m:+.2f},{err_y_m:+.2f})m"
+                )
         cv2.imshow("detect", bgr)
         cv2.waitKey(1)
 
